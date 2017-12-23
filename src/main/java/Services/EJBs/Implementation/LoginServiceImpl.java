@@ -12,21 +12,32 @@ import java.util.logging.Logger;
 
 @Stateless
 @Remote(LoginService.class)
-public class LoginServiceImpl {
+public class LoginServiceImpl implements LoginService {
     Logger logger = Logger.getLogger("LoginService");
     @PersistenceContext(name = "itPU")
     EntityManager em;
 
+    @Override
     public UsersEntity verifyUser(UsersEntity usersEntity){
-        UsersEntity result = (UsersEntity) em.createQuery("select u from UsersEntity u where u.email = :email").setParameter("email",usersEntity.getEmail()).getSingleResult();
-        //TODO verify and store the hash
-        if(result != null){
-            if(result.getPassword().equals(usersEntity.getPassword()))
-                return result;
+        try{
+            UsersEntity result = (UsersEntity) em.createQuery("select u from UsersEntity u where u.email = :email")
+                    .setParameter("email",usersEntity.getEmail())
+                    .getSingleResult();
+
+            //TODO verify and store the hash
+
+            return result;
+        }catch(Exception e){
+            logger.warning(e.getMessage());
+            return null;
         }
-        return null;
+
+
+
+
     }
 
+    @Override
     public boolean saveUpdateUser(UsersEntity usersEntity){
         try{
             em.merge(usersEntity);

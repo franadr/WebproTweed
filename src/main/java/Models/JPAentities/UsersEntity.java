@@ -2,11 +2,14 @@ package Models.JPAentities;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class UsersEntity {
+public class UsersEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +29,13 @@ public class UsersEntity {
 
 
     public UsersEntity() {
+    }
+
+    public UsersEntity(String email, String password, String user_type, boolean disabled) {
+        this.email = email;
+        this.password = password;
+        this.user_type = user_type;
+        this.disabled = disabled;
     }
 
     public Long getUser_id() {
