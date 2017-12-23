@@ -12,12 +12,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.logging.Logger;
 
 @ManagedBean
 @SessionScoped
-public class LoginController {
+public class LoginController implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @ManagedProperty(value="#{mainBean}")
     private MainBean mainBean;
@@ -28,7 +32,7 @@ public class LoginController {
 
     private UsersEntity currentUser = new UsersEntity();
 
-    public String validateUser(){
+    public void validateUser(){
         UsersEntity userResult = loginService.verifyUser(currentUser);
 
         if(userResult != null) {
@@ -37,21 +41,25 @@ public class LoginController {
                 currentUser.setLastLogin(new Date(System.currentTimeMillis()));
                 loginService.saveUpdateUser(currentUser);
                 mainBean.getConnectedUsers().add(currentUser);
-                return "/index.xhtml?faces-redirect=true";
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "index");
             }else{
-                FacesMessages.error("loginForm","","Your account has been disabled");
-                return "/login.xhtml?faces-redirect=true";
+                FacesMessages.error("Unable to login","Your account has been disabled");
             }
 
         }
         else{
-            logger.warning("userResult is null");
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Message","Error Message"));
-            logger.warning("userResult is null message sent");
-            return "/login.xhtml?faces-redirect=true";
+            FacesMessages.error("Unable to login","Wrong credentials");
         }
 
+    }
+
+    public String logout(){
+
+        this.mainBean.getConnectedUsers().remove(currentUser);
+        ((HttpSession) FacesContext.getCurrentInstance().getExternalContext()
+                .getSession(true)).invalidate();
+        return "/login.xhtml?faces-redirect=true";
     }
 
     public UsersEntity getCurrentUser() {

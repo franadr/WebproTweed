@@ -23,10 +23,13 @@ public class LoginServiceImpl implements LoginService {
             UsersEntity result = (UsersEntity) em.createQuery("select u from UsersEntity u where u.email = :email")
                     .setParameter("email",usersEntity.getEmail())
                     .getSingleResult();
+            if(result.getPassword().equals(usersEntity.getPassword()))
+                //TODO verify and store the hash
+                return result;
+            else
+                throw new Exception("Invalid password");
 
-            //TODO verify and store the hash
 
-            return result;
         }catch(Exception e){
             logger.warning(e.getMessage());
             return null;
