@@ -32,7 +32,7 @@ public class LoginController implements Serializable {
 
     private UsersEntity currentUser = new UsersEntity();
 
-    public void validateUser(){
+    public String validateUser(){
         UsersEntity userResult = loginService.verifyUser(currentUser);
 
         if(userResult != null) {
@@ -41,15 +41,17 @@ public class LoginController implements Serializable {
                 currentUser.setLastLogin(new Date(System.currentTimeMillis()));
                 loginService.saveUpdateUser(currentUser);
                 mainBean.getConnectedUsers().add(currentUser);
-                FacesContext fc = FacesContext.getCurrentInstance();
-                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "index");
+                return "/index.xhtml?faces-redirect=true";
+
             }else{
                 FacesMessages.error("Unable to login","Your account has been disabled");
+                return "";
             }
 
         }
         else{
             FacesMessages.error("Unable to login","Wrong credentials");
+            return "";
         }
 
     }

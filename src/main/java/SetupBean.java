@@ -11,9 +11,10 @@ import java.util.logging.Logger;
 @Startup
 public class SetupBean {
 
-    Logger logger = Logger.getLogger("SetupBean");
+    private Logger logger = Logger.getLogger("SetupBean");
 
     @PersistenceContext(name = "itPU")
+    private
     EntityManager em;
 
 
@@ -26,7 +27,10 @@ public class SetupBean {
         UsersEntity u1 = new UsersEntity("adrfranci@gmail.com","adri17","standard",false);
         em.merge(u1);
 
-        logger.info("   ------Insertion completed-------");
+        UsersEntity u2 = new UsersEntity("a@f.com","adri17","admin",false);
+        em.merge(u2);
+
+        logger.info("   ---------------Insertion completed--------------");
 
     }
 }

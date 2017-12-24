@@ -14,7 +14,9 @@
 <h:body>
 
     <h:form>
-        <p:growl id="growl" showDetail="true" sticky="true" autoUpdate="true"/>
+        <b:growl id="growlMsg" globalOnly="true" placementFrom="top"
+                 show-detail="true" show-summary="true" allowDismiss="true"
+                 delay="5000" escape="true" />
         <b:container layout="fluid">
             <b:image name="test" value="https://content-8338.kxcdn.com/wp-content/uploads/2014/04/Bird-M.jpg"  tooltip="Ain't he a beauty?" tooltipPosition="right" span="4" offset="4"/>
             <b:panel title="Login to tweeder" look="primary" span="4" offset="4" collapsed="false" id="loginForm" >

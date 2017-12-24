@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<h:body>
+
+    <ui:composition template="layout.xhtml">
+        <ui:define name="menu">
+
+            <h:form>
+                    <b:commandButton style="width:100%" value="Modify password" actionListener="#{viewController.choseView(true,false,false)}" update="profileAction"/>
+                    <b:commandButton style="width:100%" value="Create channel" actionListener="#{viewController.choseView(false,true,false)}" update="profileAction"/>
+                    <b:commandButton style="width:100%" value="Join a channel" actionListener="#{viewController.choseView(false,false,true)}" update="profileAction"/>
+            </h:form>
+
+        </ui:define>
+        <ui:define name="content">
+            <h:form id="profileAction">
+                <b:panel rendered="#{viewController.modPass}" title="Modify password" collapsible="false">
+                    Mod password view
+                </b:panel>
+                <b:panel rendered="#{viewController.createChannel}" title="Create channel" collapsible="false">
+                    create channel view
+                </b:panel>
+                <b:panel rendered="#{viewController.joinChannel}" title="Join channel" collapsible="false">
+                    join channel view
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>
