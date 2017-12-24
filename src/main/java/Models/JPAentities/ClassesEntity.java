@@ -1,13 +1,14 @@
 package Models.JPAentities;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
-public class ClassesEntity {
+public class ClassesEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +18,17 @@ public class ClassesEntity {
     private String title;
     private String lecturer;
 
+    @ManyToMany(mappedBy = "concerned_classes",fetch = FetchType.EAGER)
+    private List<ChannelsEntity> channels;
+
 
     public ClassesEntity() {
+    }
+
+    public ClassesEntity(String programm, String title, String lecturer) {
+        this.programm = programm;
+        this.title = title;
+        this.lecturer = lecturer;
     }
 
     public Long getClasse_id() {
@@ -51,5 +61,13 @@ public class ClassesEntity {
 
     public void setLecturer(String lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public List<ChannelsEntity> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(List<ChannelsEntity> channels) {
+        this.channels = channels;
     }
 }

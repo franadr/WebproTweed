@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<f:metadata>
+    <f:viewAction action="#{loginController.isLoggedIn()}" />
+</f:metadata>
+<h:body>
+
+    <ui:composition template="layout.xhtml">
+        <ui:define name="menu">
+            <h:form>
+                <b:commandButton style="width:100%" value="Delet ULclass" actionListener="#{viewController.choseViewAdmin(false,false,true)}" update="adminAction"/>
+                <b:commandButton style="width:100%" value="Modify ULclass" actionListener="#{viewController.choseViewAdmin(false,true,false)}" update="adminAction"/>
+                <b:commandButton style="width:100%" value="Add ULclass" actionListener="#{viewController.choseViewAdmin(true,false,false)}" update="adminAction"/>
+
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <h:form id="adminAction">
+                <b:panel rendered="#{viewController.delULClass}" title="Delete ULclass" collapsible="false">
+                    <h:form>
+                        <b:selectOneMenu value="#{adminController.delUlclass}" label="Ul class to delete" update="ulcDelForm">
+                            <f:selectItem itemLabel="(Please select Ulclass)" itemValue="" />
+                            <f:selectItems value="#{adminController.classesEntityList}" var="class" itemLabel="#{class.title}" itemValue="#{class}" />
+                        </b:selectOneMenu>
+                        <b:formGroup id="ulcDelForm">
+                                <b:commandButton look="warning" value="Delete selected class" action="#{adminController.deleteClass()}" rendered="#{not empty adminController.delUlclass}"/>
+                        </b:formGroup>
+                    </h:form>
+                </b:panel>
+                <b:panel rendered="#{viewController.modULClass}" title="Modify ULclass" collapsible="false">
+                    <h:form>
+                            <b:selectOneMenu value="#{adminController.modULclass}" label="Ul class to modify" update="ulcModForm">
+                                <f:selectItem itemLabel="(Please select Ulclass)" itemValue="" />
+                                <f:selectItems value="#{adminController.classesEntityList}" var="class" itemLabel="#{class.title}" itemValue="#{class}" />
+                            </b:selectOneMenu>
+                        <b:formGroup id="ulcModForm">
+                            <b:inputText placeholder="Lecturer" required="true" label="Lecturer" value="#{adminController.modULclass.lecturer}">
+                                <f:facet name="prepend">
+                                    <b:icon name="user" />
+                                </f:facet>
+                            </b:inputText>
+                            <b:inputText placeholder="Title" label="Title" value="#{adminController.modULclass.title}"/>
+                            <b:inputText placeholder="Program" label="Program" value="#{adminController.modULclass.programm}" />
+                            <b:commandButton look="success" value="Save UL class" action="#{adminController.updateClass(false)}" />
+                        </b:formGroup>
+                    </h:form>
+                </b:panel>
+                <b:panel rendered="#{viewController.addUlClass}" title="Add ULclass" collapsible="false">
+                    <b:form>
+                        <b:inputText placeholder="Lecturer" required="true" label="Lecturer" value="#{adminController.newULclass.lecturer}">
+                            <f:facet name="prepend">
+                                <b:icon name="user" />
+                            </f:facet>
+                        </b:inputText>
+                        <b:inputText placeholder="Title" label="Title" value="#{adminController.newULclass.title}"/>
+                        <b:inputText placeholder="Program" label="Program" value="#{adminController.newULclass.programm}" />
+                        <b:commandButton look="success" value="Save UL class" action="#{adminController.updateClass(true)}" />
+                    </b:form>
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

@@ -1,3 +1,5 @@
+import Models.JPAentities.ChannelsEntity;
+import Models.JPAentities.ClassesEntity;
 import Models.JPAentities.UsersEntity;
 
 import javax.annotation.PostConstruct;
@@ -5,6 +7,9 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Logger;
 
 @Singleton
@@ -24,11 +29,30 @@ public class SetupBean {
         logger.info("   ------Inserting sample into the database-------");
 
 
-        UsersEntity u1 = new UsersEntity("adrfranci@gmail.com","adri17","standard",false);
-        em.merge(u1);
+        logger.info("Inserting some users");
+        UsersEntity u1 = em.merge(new UsersEntity("adrfranci@gmail.com","adri17","standard",false));
+        UsersEntity u2 = em.merge(new UsersEntity("a@f.com","adri17","admin",false));
 
-        UsersEntity u2 = new UsersEntity("a@f.com","adri17","admin",false);
-        em.merge(u2);
+        logger.info("inserting some ul classes");
+        ClassesEntity c1 = em.merge(new ClassesEntity("BINFO","Web Programming","V. Muller"));
+        ClassesEntity c2 = em.merge(new ClassesEntity("BINFO","J2E","V. Muller"));
+        ClassesEntity c3 = em.merge(new ClassesEntity("BSEG","Microeconomy I","L. Bertinelli"));
+        ClassesEntity c4 = em.merge(new ClassesEntity("BSEG","Macroeconomy I","A. Bourgain"));
+
+
+        logger.info("adding some channels");
+        ChannelsEntity chan1 = em.merge(new ChannelsEntity(new Date(System.currentTimeMillis()),
+                "The binfo channel",
+                Arrays.asList(u1,u2),
+                Arrays.asList(c1,c2),
+                u1));
+
+        ChannelsEntity chan2 = em.merge(new ChannelsEntity(new Date(System.currentTimeMillis()),
+                "The bseg channel",
+                Arrays.asList(u1,u2),
+                Arrays.asList(c3,c4),
+                u1));
+
 
         logger.info("   ---------------Insertion completed--------------");
 

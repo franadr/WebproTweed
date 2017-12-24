@@ -2,6 +2,7 @@ package Controllers.ManagedBeans;
 
 
 import Models.JPAentities.UsersEntity;
+import Services.EJBs.CRUDservice;
 import Services.EJBs.Implementation.LoginServiceImpl;
 import Services.EJBs.LoginService;
 import net.bootsfaces.utils.FacesMessages;
@@ -12,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.Entity;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.Date;
@@ -30,8 +32,11 @@ public class LoginController implements Serializable {
     @EJB(name= "LoginServiceImpl")
     private LoginService loginService;
 
-    private UsersEntity currentUser = new UsersEntity();
+    @EJB(name="CRUDserviceImpl")
+    private CRUDservice crudService;
 
+    private UsersEntity currentUser = new UsersEntity();
+    private boolean loggedIn = false;
     public String validateUser(){
         UsersEntity userResult = loginService.verifyUser(currentUser);
 
@@ -39,8 +44,9 @@ public class LoginController implements Serializable {
             if(!userResult.isDisabled()){
                 currentUser = userResult;
                 currentUser.setLastLogin(new Date(System.currentTimeMillis()));
-                loginService.saveUpdateUser(currentUser);
+                crudService.saveUpdateEntity(currentUser);
                 mainBean.getConnectedUsers().add(currentUser);
+                loggedIn = true;
                 return "/index.xhtml?faces-redirect=true";
 
             }else{
@@ -79,5 +85,18 @@ public class LoginController implements Serializable {
 
     public void setMainBean(MainBean mainBean) {
         this.mainBean = mainBean;
+    }
+
+    public void isLoggedIn() {
+        if(!loggedIn){
+            FacesMessages.error("Access denied ");
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "login");
+        }
+
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
     }
 }

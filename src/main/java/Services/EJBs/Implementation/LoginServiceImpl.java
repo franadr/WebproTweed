@@ -40,15 +40,5 @@ public class LoginServiceImpl implements LoginService {
 
     }
 
-    @Override
-    public boolean saveUpdateUser(UsersEntity usersEntity){
-        try{
-            em.merge(usersEntity);
-            return true;
-        }catch (Exception e){
-            logger.warning(e.getMessage());
-            return false;
-        }
-    }
 
 }

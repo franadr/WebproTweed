@@ -7,19 +7,24 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui">
+
 <h:head>
-    <title>It devices management</title>
+    <title>Tweeder !</title>
     <meta name="Adriano FRANCI" content="011109344A"/>
+
 </h:head>
+
 <h:body style="padding: 60px;">
 
-
+        <b:growl id="growlMsg" globalOnly="true" placementFrom="top"
+             show-detail="true" show-summary="true" allowDismiss="true"
+             delay="5000" escape="true" />
         <ui:insert name="header">
             <b:navBar brand="Tweeder" fixed="top" >
                 <b:navbarLinks>
                     <b:navLink value="Tweeds thread" href="/index.xhtml" />
                     <b:navLink value="Your profile" href="/profile.xhtml"/>
-                    <b:navLink value="Admin" href="#"
+                    <b:navLink value="Admin" href="/admin.xhtml"
                                rendered="#{loginController.currentUser.user_type eq 'admin'}"/>
                 </b:navbarLinks>
                 <b:navbarLinks pull="right"><b:navLink value="    " href="#"/></b:navbarLinks>
@@ -41,14 +46,11 @@
             <b:panelGrid colSpans="2,8,2" size="md">
                 <b:panel collapsible="false" title="Menu">
                 <ui:insert name="menu">
-
                         <h:form>
-                            <b:selectBooleanCheckbox value="ok" caption="checkbox 1" label="Channel selection" />
-                            <b:selectBooleanCheckbox value="ok" caption="checkbox 2" />
-                            <b:selectBooleanCheckbox value="ok" caption="checkbox 3" />
-                            <b:selectBooleanCheckbox value="ok" caption="checkbox 4" />
+                            <b:selectMultiMenu value="#{channelController.selectedChannels}" id="brandID" >
+                                <f:selectItems value="#{channelController.channelsEntitiesList}" var="channel" itemLabel="#{channel.channel_name}" itemValue="#{channel}"/>
+                            </b:selectMultiMenu>
                         </h:form>
-
                 </ui:insert>
                 </b:panel>
 

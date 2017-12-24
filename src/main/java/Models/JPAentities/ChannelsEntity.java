@@ -1,11 +1,14 @@
 package Models.JPAentities;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class ChannelsEntity {
+public class ChannelsEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
 
     @Id
@@ -21,7 +24,7 @@ public class ChannelsEntity {
 
     @ManyToMany
     @JoinTable(name="channel_class", joinColumns = @JoinColumn(name = "channel_id", referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(name = "class_id", referencedColumnName = "classe_id"))
-    private List<ClassesEntity> concerned_classes;
+    private List<ClassesEntity> concerned_classes = new ArrayList<>();
 
 
     @ManyToOne
@@ -30,6 +33,14 @@ public class ChannelsEntity {
 
 
     public ChannelsEntity() {
+    }
+
+    public ChannelsEntity(Date creation_date, String channel_name, List<UsersEntity> channelMembers, List<ClassesEntity> concerned_classes, UsersEntity channel_creator) {
+        this.creation_date = creation_date;
+        this.channel_name = channel_name;
+        this.channelMembers = channelMembers;
+        this.concerned_classes = concerned_classes;
+        this.channel_creator = channel_creator;
     }
 
     public Long getChannel_id() {
