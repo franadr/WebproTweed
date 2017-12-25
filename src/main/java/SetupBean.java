@@ -49,7 +49,7 @@ public class SetupBean {
 
         ChannelsEntity chan2 = em.merge(new ChannelsEntity(new Date(System.currentTimeMillis()),
                 "The bseg channel",
-                Arrays.asList(u1,u2),
+                Arrays.asList(u1),
                 Arrays.asList(c3,c4),
                 u1));
 

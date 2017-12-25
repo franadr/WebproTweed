@@ -5,7 +5,6 @@ import Services.EJBs.CRUDservice;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -43,6 +42,16 @@ public class CRUDserviceImpl implements CRUDservice {
     @Override
     public <T> boolean removeOne(T entity, long id) {
         return false;
+    }
+
+    @Override
+    public <T> T findOne(Class<T> entity, long id) {
+        try{
+           return  em.find(entity,id);
+        }catch(Exception e){
+            logger.info(e.getMessage());
+            return null;
+        }
     }
 }
 

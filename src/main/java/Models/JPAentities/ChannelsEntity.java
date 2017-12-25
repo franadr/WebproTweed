@@ -17,7 +17,7 @@ public class ChannelsEntity implements Serializable {
 
     private Date creation_date;
     private String channel_name;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="channels_user", joinColumns = @JoinColumn(name = "channel_id", referencedColumnName = "channel_id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
     private List<UsersEntity> channelMembers;
 
