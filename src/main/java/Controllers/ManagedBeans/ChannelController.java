@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,7 +21,12 @@ import java.util.logging.Logger;
 public class ChannelController {
     Logger logger = Logger.getLogger("ChannelController");
     private List<ChannelsEntity> channelsEntitiesList;
-    private List<ChannelsEntity> selectedChannels;
+    private List<ChannelsEntity> selectedChannels = new ArrayList<>();
+
+
+    //TODO make the channelSelection collection holding the boolean Value of showing or not
+    private HashMap<ChannelsEntity,Boolean> channelSelection = new HashMap<>();
+
     @EJB(name="CRUDserviceImpl")
     private CRUDservice crudService;
 
@@ -27,16 +34,17 @@ public class ChannelController {
     private ChannelService channelService;
 
     @ManagedProperty(value = "#{loginController}")
+    private
     LoginController loginController;
 
     public ChannelController() { }
 
     //TODO make returned channel list only the list where user is actually registered
     /**
-     *
      * @return return the list of channel to which the connected user is registered
      */
     public List<ChannelsEntity> getChannelsEntitiesList() {
+
         return channelService.findByUser(loginController.getCurrentUser());
     }
 

@@ -47,7 +47,7 @@
                 <b:panel collapsible="false" title="Menu">
                 <ui:insert name="menu">
                         <h:form>
-                            <b:selectMultiMenu value="#{channelController.selectedChannels}" id="brandID" >
+                            <b:selectMultiMenu value="string" id="brandID" title="Channel selection" >
                                 <f:selectItems value="#{channelController.channelsEntitiesList}" var="channel" itemLabel="#{channel.channel_name}" itemValue="#{channel}"/>
                             </b:selectMultiMenu>
                         </h:form>

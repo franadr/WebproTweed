@@ -1,5 +1,6 @@
 import Models.JPAentities.ChannelsEntity;
 import Models.JPAentities.ClassesEntity;
+import Models.JPAentities.TweedsEntity;
 import Models.JPAentities.UsersEntity;
 
 import javax.annotation.PostConstruct;
@@ -53,6 +54,9 @@ public class SetupBean {
                 Arrays.asList(c3,c4),
                 u1));
 
+        logger.info("adding some sample tweeds");
+        TweedsEntity t1 = em.merge(new TweedsEntity("this is the first tweed",new Date(System.currentTimeMillis()),chan1,u1));
+        TweedsEntity t2 = em.merge(new TweedsEntity("This is the second tweed on bseg channel",new Date(System.currentTimeMillis()),chan2,u2));
 
         logger.info("   ---------------Insertion completed--------------");
 

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
 <f:metadata>
     <f:viewAction action="#{loginController.isLoggedIn()}" />
 </f:metadata>
@@ -12,7 +12,30 @@
 
     <ui:composition template="layout.xhtml">
         <ui:define name="content">
-            Tweeds thread
+            <b:panel collapsible="false" title="Tweeds thread">
+                <b:panel collapsible="true" collapsed="false" title="New tweed">
+                    <h:form>
+                        <b:inputTextarea value="#{tweedController.newTweed.content}" id="message" maxlength="200" placeholder="#Enter your tweed ... " required="true"/>
+                        <b:message for="message"/>
+                        <b:selectOneMenu id="channelSelection" value="#{tweedController.newTweed.related_channel}" label="Channel list" required="true">
+                            <f:selectItem itemLabel="(Please select the channel)" itemValue="" />
+                            <f:selectItems value="#{channelController.channelsEntitiesList}" var="channel" itemLabel="#{channel.channel_name}" itemValue="#{channel}" />
+                        </b:selectOneMenu>
+                        <b:message for="channelSelection"/>
+                        <b:commandButton value="Post !" action="#{tweedController.postTweed}"/>
+                    </h:form>
+                </b:panel>
+                <h:form>
+                    <ui:repeat value="#{tweedController.tweedList}" var="tweed">
+                        <p:poll interval="1" update="@form" />
+                        <b:panel title="#{tweed.tweed_sender.email} on the #{tweed.publication_date}">
+                            ##{tweed.content}
+                        </b:panel>
+                    </ui:repeat>
+                </h:form>
+
+
+            </b:panel>
         </ui:define>
     </ui:composition>
 </h:body>
