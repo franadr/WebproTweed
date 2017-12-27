@@ -1,6 +1,7 @@
 package Controllers.ManagedBeans;
 
 
+import Models.JPAentities.ChannelsEntity;
 import Models.JPAentities.UsersEntity;
 import Services.EJBs.CRUDservice;
 import Services.EJBs.Implementation.LoginServiceImpl;
@@ -16,7 +17,9 @@ import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 @ManagedBean
@@ -37,6 +40,8 @@ public class LoginController implements Serializable {
 
     private UsersEntity currentUser = new UsersEntity();
     private boolean loggedIn = false;
+    private List<ChannelsEntity> allChannels;
+
     public String validateUser(){
         UsersEntity userResult = loginService.verifyUser(currentUser);
 
@@ -98,5 +103,13 @@ public class LoginController implements Serializable {
 
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
+    }
+
+    public List<ChannelsEntity> getAllChannels() {
+        return allChannels;
+    }
+
+    public void setAllChannels(List<ChannelsEntity> allChannels) {
+        this.allChannels = allChannels;
     }
 }

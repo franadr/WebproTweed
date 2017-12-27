@@ -2,14 +2,19 @@ package Controllers.ManagedBeans;
 
 
 import Models.JPAentities.ChannelsEntity;
+import Models.JPAentities.ClassesEntity;
 import Models.JPAentities.UsersEntity;
 import Services.EJBs.CRUDservice;
 import Services.EJBs.ChannelService;
+import net.bootsfaces.utils.FacesMessages;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,14 +23,17 @@ import java.util.logging.Logger;
 
 @ManagedBean
 @ViewScoped
-public class ChannelController {
+public class ChannelController implements Serializable {
     Logger logger = Logger.getLogger("ChannelController");
     private List<ChannelsEntity> channelsEntitiesList;
     private List<ChannelsEntity> selectedChannels = new ArrayList<>();
-
+    private List<ChannelsEntity> allchannelsEntitiesList;
 
     //TODO make the channelSelection collection holding the boolean Value of showing or not
     private HashMap<ChannelsEntity,Boolean> channelSelection = new HashMap<>();
+    private HashMap<ClassesEntity,Boolean> courseSelection = new HashMap<>();
+
+
 
     @EJB(name="CRUDserviceImpl")
     private CRUDservice crudService;
@@ -37,7 +45,32 @@ public class ChannelController {
     private
     LoginController loginController;
 
-    public ChannelController() { }
+
+    private ChannelsEntity newChannel = new ChannelsEntity();
+
+    public ChannelController() {
+//        List<ClassesEntity> classes =  crudService.findAll(ClassesEntity.class);
+//        classes.forEach(c -> courseSelection.put(c,false));
+    }
+
+    public void unregister(ChannelsEntity c){
+            if(channelService.unregisterFromChannel(loginController.getCurrentUser(),c))
+                FacesMessages.info("Unregistered from channel");
+            else
+                FacesMessages.warning("Not unregister, see logs");
+
+
+
+    }
+    public void register(ChannelsEntity c){
+        logger.info("Subscribing to "+c.getChannel_name());
+        if(channelService.registerInChannel(loginController.getCurrentUser(),c))
+            FacesMessages.info("Registered to channel");
+        else
+            FacesMessages.warning("Not registered see logs");
+    }
+
+
 
     //TODO make returned channel list only the list where user is actually registered
     /**
@@ -46,6 +79,15 @@ public class ChannelController {
     public List<ChannelsEntity> getChannelsEntitiesList() {
 
         return channelService.findByUser(loginController.getCurrentUser());
+    }
+
+    public List<ChannelsEntity> getAllchannelsEntitiesList() {
+        loginController.setAllChannels(crudService.findAll(ChannelsEntity.class));
+        return crudService.findAll(ChannelsEntity.class);
+    }
+
+    public void setAllchannelsEntitiesList(List<ChannelsEntity> allchannelsEntitiesList) {
+        this.allchannelsEntitiesList = allchannelsEntitiesList;
     }
 
     public void setChannelsEntitiesList(List<ChannelsEntity> channelsEntitiesList) {
@@ -70,5 +112,28 @@ public class ChannelController {
 
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
+    }
+
+    public ChannelsEntity getNewChannel() {
+        return newChannel;
+    }
+
+    public void setNewChannel(ChannelsEntity newChannel) {
+        this.newChannel = newChannel;
+    }
+
+    public HashMap<ClassesEntity, Boolean> getCourseSelection() {
+        return courseSelection;
+    }
+
+    public void setCourseSelection(HashMap<ClassesEntity, Boolean> courseSelection) {
+        this.courseSelection = courseSelection;
+    }
+
+    public boolean newContain(List<ChannelsEntity> l ,ChannelsEntity o){
+        for(ChannelsEntity c : l)
+            if(c.getChannel_id() == o.getChannel_id())
+                return true;
+        return false;
     }
 }

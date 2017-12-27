@@ -1,6 +1,9 @@
 package Models.JPAentities;
 
 
+import Services.EJBs.CRUDservice;
+
+import javax.ejb.EJB;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +29,6 @@ public class UsersEntity implements Serializable {
 
     @OneToMany(mappedBy = "tweed_sender")
     private List<TweedsEntity> sended_tweeds;
-
 
     public UsersEntity() {
     }
@@ -87,6 +89,7 @@ public class UsersEntity implements Serializable {
     }
 
     public List<ChannelsEntity> getChannelsList() {
+
         return channelsList;
     }
 

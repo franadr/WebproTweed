@@ -24,10 +24,25 @@
                     Mod password view
                 </b:panel>
                 <b:panel rendered="#{viewController.createChannel}" title="Create channel" collapsible="false">
-                    create channel view
+                    <h:form>
+                        <b:inputText value="#{channelController.newChannel.channel_name}" label="Channel name" required="true"/>
+                        <b:message/>
+                        <h:form title="Classes selection">
+                            <ui:repeat value="#{adminController.classesEntityList}" var="class">
+                                <b:selectBooleanCheckbox value="#{channelController.courseSelection.replace(class,true)}" label="#{class.title}"/>
+                            </ui:repeat>
+                        </h:form>
+                        <b:message/>
+                    </h:form>
                 </b:panel>
                 <b:panel rendered="#{viewController.joinChannel}" title="Join channel" collapsible="false">
-                    join channel view
+                    <b:form horizontal="true">
+                        <ui:repeat value="#{channelController.allchannelsEntitiesList}" var="channel" >
+                                <h:outputText value="#{channel.channel_name}"/>
+                                <b:commandButton action="#{channelController.register(channel)}" look="success" value="Join channel" rendered="#{ not channelController.newContain(channelController.channelsEntitiesList,channel)}"/>
+                                <b:commandButton action="#{channelController.unregister(channel)}" look="danger" value="Unregister from channel" rendered="#{channelController.newContain(channelController.channelsEntitiesList,channel)}"/>
+                        </ui:repeat>
+                    </b:form>
                 </b:panel>
             </h:form>
         </ui:define>

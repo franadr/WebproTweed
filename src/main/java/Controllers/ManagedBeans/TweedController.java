@@ -12,13 +12,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @ManagedBean
 @ViewScoped
-public class TweedController {
+public class TweedController implements Serializable {
 
     @ManagedProperty(value = "#{loginController}")
     private

@@ -2,10 +2,11 @@ package Controllers.ManagedBeans;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import java.io.Serializable;
 
 @ManagedBean
 @ViewScoped
-public class ViewController {
+public class ViewController implements Serializable {
 
     boolean modPass = false;
     boolean createChannel = false;

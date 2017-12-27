@@ -8,15 +8,17 @@ import net.bootsfaces.utils.FacesMessages;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.Entity;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 
 @ManagedBean
 @ViewScoped
-public class AdminController {
+public class AdminController implements Serializable {
 
     Logger logger = Logger.getLogger("AdminController");
 
@@ -25,6 +27,10 @@ public class AdminController {
 
     @EJB(name="ULclassServiceImpl")
     private ULclassService uLclassService;
+
+    @ManagedProperty(value = "#{channelController}")
+    private
+    ChannelController channelController;
 
     private ClassesEntity modULclass;
     private ClassesEntity newULclass = new ClassesEntity();
@@ -70,8 +76,8 @@ public class AdminController {
     }
 
     public List<ClassesEntity> getClassesEntityList() {
-        List list = crudService.findAll(ClassesEntity.class);
-
+        List<ClassesEntity> list = crudService.findAll(ClassesEntity.class);
+        list.forEach(c -> channelController.getCourseSelection().put(c,false));
         logger.info("Class list size : "+list.size());
 
         return list;
@@ -87,5 +93,13 @@ public class AdminController {
 
     public void setDelUlclass(ClassesEntity delUlclass) {
         this.delUlclass = delUlclass;
+    }
+
+    public ChannelController getChannelController() {
+        return channelController;
+    }
+
+    public void setChannelController(ChannelController channelController) {
+        this.channelController = channelController;
     }
 }
