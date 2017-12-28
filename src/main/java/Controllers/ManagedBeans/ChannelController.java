@@ -15,10 +15,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 @ManagedBean
@@ -31,8 +28,8 @@ public class ChannelController implements Serializable {
 
     //TODO make the channelSelection collection holding the boolean Value of showing or not
     private HashMap<ChannelsEntity,Boolean> channelSelection = new HashMap<>();
-    private HashMap<ClassesEntity,Boolean> courseSelection = new HashMap<>();
 
+    private List<ClassesEntity> selectedClasses = new ArrayList<>();
 
 
     @EJB(name="CRUDserviceImpl")
@@ -45,7 +42,7 @@ public class ChannelController implements Serializable {
     private
     LoginController loginController;
 
-
+    private String[] classSelection ;
     private ChannelsEntity newChannel = new ChannelsEntity();
 
     public ChannelController() {
@@ -58,9 +55,6 @@ public class ChannelController implements Serializable {
                 FacesMessages.info("Unregistered from channel");
             else
                 FacesMessages.warning("Not unregister, see logs");
-
-
-
     }
     public void register(ChannelsEntity c){
         logger.info("Subscribing to "+c.getChannel_name());
@@ -70,7 +64,17 @@ public class ChannelController implements Serializable {
             FacesMessages.warning("Not registered see logs");
     }
 
-
+    public void saveChannel(){
+        newChannel.setChannel_creator(loginController.getCurrentUser());
+        newChannel.setConcerned_classes(selectedClasses);
+        newChannel.setCreation_date(new Date(System.currentTimeMillis()));
+        if(crudService.saveUpdateEntity(newChannel)){
+            FacesMessages.info("Channel successfully created");
+            logger.info("New channel : "+newChannel.getChannel_name()+" created on "+newChannel.getCreation_date().toString() + " by "+newChannel.getChannel_creator().getEmail());
+        }
+        else
+            FacesMessages.warning("Channel not created, see logs");
+    }
 
     //TODO make returned channel list only the list where user is actually registered
     /**
@@ -122,18 +126,45 @@ public class ChannelController implements Serializable {
         this.newChannel = newChannel;
     }
 
-    public HashMap<ClassesEntity, Boolean> getCourseSelection() {
-        return courseSelection;
-    }
-
-    public void setCourseSelection(HashMap<ClassesEntity, Boolean> courseSelection) {
-        this.courseSelection = courseSelection;
-    }
-
     public boolean newContain(List<ChannelsEntity> l ,ChannelsEntity o){
         for(ChannelsEntity c : l)
             if(c.getChannel_id() == o.getChannel_id())
                 return true;
         return false;
+    }
+
+    public List<ClassesEntity> getSelectedClasses() {
+            List<ClassesEntity> result = new ArrayList<>();
+            List<ClassesEntity> allClasses = crudService.findAll(ClassesEntity.class);
+            if(classSelection == null || classSelection.length < 1){
+                logger.info("ClassSelection is null or size < 1 ");
+                return new ArrayList<>();
+            }
+
+            else{
+                logger.info("Return the list of selected classes");
+
+                for(String s : classSelection)
+                    for (ClassesEntity c : allClasses){
+                        if(c.getTitle().equals(s))
+                            result.add(c);
+                    }
+
+                logger.info("Result size : "+result.size());
+
+                selectedClasses = result;
+                return selectedClasses;
+        }
+
+
+    }
+
+    public String[] getClassSelection() {
+        return classSelection;
+    }
+
+    public void setClassSelection(String[] classSelection) {
+        logger.info("ClassSelection lenght : "+classSelection.length);
+        this.classSelection = classSelection;
     }
 }

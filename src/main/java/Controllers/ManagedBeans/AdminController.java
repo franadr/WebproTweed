@@ -77,7 +77,6 @@ public class AdminController implements Serializable {
 
     public List<ClassesEntity> getClassesEntityList() {
         List<ClassesEntity> list = crudService.findAll(ClassesEntity.class);
-        list.forEach(c -> channelController.getCourseSelection().put(c,false));
         logger.info("Class list size : "+list.size());
 
         return list;
