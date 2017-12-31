@@ -40,5 +40,15 @@ public class LoginServiceImpl implements LoginService {
 
     }
 
+    @Override
+    public UsersEntity findByEmail(String email) {
+        try{
+            return (UsersEntity)em.createQuery("select user from UsersEntity user where user.email = :email").setParameter("email",email).getSingleResult();
+        }catch(Exception e){
+            logger.warning(e.getMessage());
+            return null;
+        }
+    }
+
 
 }

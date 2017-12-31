@@ -13,10 +13,10 @@
     <ui:composition template="layout.xhtml">
         <ui:define name="menu">
             <h:form>
-                <b:commandButton style="width:100%" value="Delete UL class" actionListener="#{viewController.choseViewAdmin(false,false,true)}" update="adminAction"/>
-                <b:commandButton style="width:100%" value="Modify U Lclass" actionListener="#{viewController.choseViewAdmin(false,true,false)}" update="adminAction"/>
-                <b:commandButton style="width:100%" value="Add UL class" actionListener="#{viewController.choseViewAdmin(true,false,false)}" update="adminAction"/>
-
+                <b:commandButton style="width:100%" value="Delete UL class" actionListener="#{viewController.choseViewAdmin(false,false,true,false)}" update="adminAction"/>
+                <b:commandButton style="width:100%" value="Modify U Lclass" actionListener="#{viewController.choseViewAdmin(false,true,false,false)}" update="adminAction"/>
+                <b:commandButton style="width:100%" value="Add UL class" actionListener="#{viewController.choseViewAdmin(true,false,false,false)}" update="adminAction"/>
+                <b:commandButton style="width:100%" value="Disable/Enable user" actionListener="#{viewController.choseViewAdmin(false,false,false,true)}" update="adminAction"/>
             </h:form>
         </ui:define>
         <ui:define name="content">
@@ -61,6 +61,20 @@
                         <b:inputText placeholder="Program" label="Program" value="#{adminController.newULclass.programm}" />
                         <b:commandButton look="success" value="Save UL class" action="#{adminController.updateClass(true)}" />
                     </b:form>
+                </b:panel>
+                <b:panel rendered="#{viewController.disableUser}" title="Disable/Enable a User" collapsible="false">
+                    <h:form>
+                        <b:selectOneMenu value="#{adminController.userToChange}" label="User to disable" update="userDisForm">
+                            <f:selectItem itemLabel="(Please select Ulclass)" itemValue="" />
+                            <f:selectItems value="#{adminController.userList}" var="user" itemLabel="#{user.email}" itemValue="#{user}" />
+                        </b:selectOneMenu>
+
+                    <b:formGroup id="userDisForm">
+                        <b:commandButton value="Disable user" action="#{adminController.changeUser(true)}" rendered="#{ not empty adminController.userToChange and not adminController.userToChange.disabled}"/>
+                        <b:commandButton value="Enable user" action="#{adminController.changeUser(false)}" rendered="#{ not empty adminController.userToChange and adminController.userToChange.disabled}"/>
+                    </b:formGroup>
+                    </h:form>
+
                 </b:panel>
             </h:form>
         </ui:define>

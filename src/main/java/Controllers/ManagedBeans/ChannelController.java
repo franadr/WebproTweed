@@ -137,12 +137,10 @@ public class ChannelController implements Serializable {
             List<ClassesEntity> result = new ArrayList<>();
             List<ClassesEntity> allClasses = crudService.findAll(ClassesEntity.class);
             if(classSelection == null || classSelection.length < 1){
-                logger.info("ClassSelection is null or size < 1 ");
                 return new ArrayList<>();
             }
 
             else{
-                logger.info("Return the list of selected classes");
 
                 for(String s : classSelection)
                     for (ClassesEntity c : allClasses){
@@ -164,7 +162,6 @@ public class ChannelController implements Serializable {
     }
 
     public void setClassSelection(String[] classSelection) {
-        logger.info("ClassSelection lenght : "+classSelection.length);
         this.classSelection = classSelection;
     }
 }

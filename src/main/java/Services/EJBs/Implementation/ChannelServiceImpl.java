@@ -49,7 +49,6 @@ public class ChannelServiceImpl implements ChannelService{
             ChannelsEntity theChannel = em.find(ChannelsEntity.class,c.getChannel_id());
             UsersEntity theUser = em.find(UsersEntity.class,u.getUser_id());
             theChannel.getChannelMembers().add(theUser);
-            logger.info("new channel list saved 1");
             em.merge(theChannel);
             return true;
         }catch(Exception e){
@@ -65,7 +64,6 @@ public class ChannelServiceImpl implements ChannelService{
             ChannelsEntity theChannel = em.find(ChannelsEntity.class,c.getChannel_id());
             UsersEntity theUser = em.find(UsersEntity.class,u.getUser_id());
             theChannel.getChannelMembers().remove(theUser);
-            logger.info("new channel list saved 2");
             em.merge(theChannel);
             return true;
         }catch(Exception e){

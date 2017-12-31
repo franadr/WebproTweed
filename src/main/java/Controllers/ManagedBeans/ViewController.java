@@ -14,6 +14,7 @@ public class ViewController implements Serializable {
     boolean addUlClass = false;
     boolean modULClass = false;
     boolean delULClass = false;
+    boolean disableUser =false;
 
     public void choseViewProfile(boolean modpass, boolean createChannel, boolean joinChannel){
         this.modPass = modpass;
@@ -21,10 +22,11 @@ public class ViewController implements Serializable {
         this.joinChannel = joinChannel;
     }
 
-    public void choseViewAdmin(boolean addUlClass,boolean modULClass, boolean delULClass){
+    public void choseViewAdmin(boolean addUlClass,boolean modULClass, boolean delULClass,boolean disableUser){
         this.addUlClass=addUlClass;
         this.modULClass=modULClass;
         this.delULClass=delULClass;
+        this.disableUser=disableUser;
     }
 
     public boolean isModPass() {
@@ -73,5 +75,13 @@ public class ViewController implements Serializable {
 
     public void setDelULClass(boolean delULClass) {
         this.delULClass = delULClass;
+    }
+
+    public boolean isDisableUser() {
+        return disableUser;
+    }
+
+    public void setDisableUser(boolean disableUser) {
+        this.disableUser = disableUser;
     }
 }

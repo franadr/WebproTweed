@@ -31,7 +31,6 @@ public class CRUDserviceImpl implements CRUDservice {
     @Override
     public <T> List findAll(Class<T> entity) {
         try{
-            logger.info("Gathering all entites for class : "+entity.getName());
             return em.createQuery("select entity from "+entity.getName()+" entity").getResultList();
         }catch (Exception e){
             logger.warning(e.getMessage());

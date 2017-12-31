@@ -33,6 +33,7 @@ public class SetupBean {
         logger.info("Inserting some users");
         UsersEntity u1 = em.merge(new UsersEntity("adrfranci@gmail.com","adri17","standard",false));
         UsersEntity u2 = em.merge(new UsersEntity("a@f.com","adri17","admin",false));
+        UsersEntity u3 = em.merge(new UsersEntity("v.muller@uni.lu","vmuller","standard",true));
 
         logger.info("inserting some ul classes");
         ClassesEntity c1 = em.merge(new ClassesEntity("BINFO","Web Programming","V. Muller"));

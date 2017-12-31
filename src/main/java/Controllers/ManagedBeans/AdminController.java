@@ -2,6 +2,7 @@ package Controllers.ManagedBeans;
 
 
 import Models.JPAentities.ClassesEntity;
+import Models.JPAentities.UsersEntity;
 import Services.EJBs.CRUDservice;
 import Services.EJBs.ULclassService;
 import net.bootsfaces.utils.FacesMessages;
@@ -36,6 +37,9 @@ public class AdminController implements Serializable {
     private ClassesEntity newULclass = new ClassesEntity();
     private ClassesEntity delUlclass;
     private List<ClassesEntity> classesEntityList;
+    private List<UsersEntity> userList;
+
+    private UsersEntity userToChange;
 
     public void updateClass(boolean newclass){
         if(newclass){
@@ -59,6 +63,15 @@ public class AdminController implements Serializable {
 
     }
 
+    public void changeUser(boolean disable){
+        userToChange.setDisabled(disable);
+        if(crudService.saveUpdateEntity(userToChange)){
+            FacesMessages.info("User "+userToChange.getEmail()+ "disabled : "+userToChange.isDisabled());
+        }else{
+            FacesMessages.info("User not changed, see logs");
+        }
+    }
+
     public ClassesEntity getNewULclass() {
         return newULclass;
     }
@@ -77,7 +90,6 @@ public class AdminController implements Serializable {
 
     public List<ClassesEntity> getClassesEntityList() {
         List<ClassesEntity> list = crudService.findAll(ClassesEntity.class);
-        logger.info("Class list size : "+list.size());
 
         return list;
     }
@@ -100,5 +112,21 @@ public class AdminController implements Serializable {
 
     public void setChannelController(ChannelController channelController) {
         this.channelController = channelController;
+    }
+
+    public List<UsersEntity> getUserList() {
+        return crudService.findAll(UsersEntity.class);
+    }
+
+    public void setUserList(List<UsersEntity> userList) {
+        this.userList = userList;
+    }
+
+    public UsersEntity getUserToChange() {
+        return userToChange;
+    }
+
+    public void setUserToChange(UsersEntity userToChange) {
+        this.userToChange = userToChange;
     }
 }

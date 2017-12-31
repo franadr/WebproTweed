@@ -55,7 +55,7 @@ public class LoginController implements Serializable {
                 return "/index.xhtml?faces-redirect=true";
 
             }else{
-                FacesMessages.error("Unable to login","Your account has been disabled");
+                FacesMessages.error("Unable to login","Your account has been disabled please contact admin");
                 return "";
             }
 
@@ -73,6 +73,17 @@ public class LoginController implements Serializable {
         ((HttpSession) FacesContext.getCurrentInstance().getExternalContext()
                 .getSession(true)).invalidate();
         return "/login.xhtml?faces-redirect=true";
+    }
+
+    public void register(){
+        if(loginService.findByEmail(currentUser.getEmail()) != null )
+            FacesMessages.warning("User already exists with this email please chose another one");
+        else{
+            if(crudService.saveUpdateEntity(currentUser))
+                FacesMessages.info("You have been registered, please login with your credentials");
+
+        }
+
     }
 
     public UsersEntity getCurrentUser() {
