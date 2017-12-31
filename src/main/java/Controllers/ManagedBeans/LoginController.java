@@ -41,6 +41,9 @@ public class LoginController implements Serializable {
     private UsersEntity currentUser = new UsersEntity();
     private boolean loggedIn = false;
     private List<ChannelsEntity> allChannels;
+    private String newPassword;
+    private String oldPassword;
+    private String confirmPassword;
 
     public String validateUser(){
         UsersEntity userResult = loginService.verifyUser(currentUser);
@@ -67,6 +70,23 @@ public class LoginController implements Serializable {
 
     }
 
+    public void changePassword(){
+        if(!oldPassword.equals(currentUser.getPassword())){
+            FacesMessages.warning("Password not changed, old password don't match");
+        }else{
+            if(newPassword.equals(confirmPassword)){
+                currentUser.setPassword(newPassword);
+                if(crudService.saveUpdateEntity(currentUser))
+                    FacesMessages.info("Password changed");
+                else
+                    FacesMessages.warning("Password not changed, see logs");
+            }else{
+                FacesMessages.info("confirmPassword","","Password do not match");
+            }
+
+
+        }
+    }
     public String logout(){
 
         this.mainBean.getConnectedUsers().remove(currentUser);
@@ -122,5 +142,29 @@ public class LoginController implements Serializable {
 
     public void setAllChannels(List<ChannelsEntity> allChannels) {
         this.allChannels = allChannels;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

@@ -18,15 +18,19 @@
                  show-detail="true" show-summary="true" allowDismiss="true"
                  delay="5000" escape="true" />
         <b:container layout="fluid">
-            <b:image name="test" value="https://content-8338.kxcdn.com/wp-content/uploads/2014/04/Bird-M.jpg"  tooltip="Ain't he a beauty?" tooltipPosition="right" span="4" offset="4"/>
+            <b:image name="test" value="tweeder.jpg"  tooltip="Ain't he a beauty?" tooltipPosition="right" span="4" offset="4"/>
             <b:panel title="Login to tweeder" look="primary" span="4" offset="4" collapsed="false" id="loginForm" >
                 <b:row>
                     <b:column medium-screen="4">
                         <h:outputText value="Username:" for="username" />
                     </b:column>
                     <b:column medium-screen="8">
-                        <b:inputText placeholder="Username" id="username" value="#{loginController.currentUser.email}"
-                                     autocomplete="false">
+                        <b:inputText placeholder="Username"
+                                     id="username"
+                                     value="#{loginController.currentUser.email}"
+                                     autocomplete="false"
+                                     validatorMessage="Invalid email">
+                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
                             <f:facet name="prepend">
                                 <b:icon name="user" />
                             </f:facet>

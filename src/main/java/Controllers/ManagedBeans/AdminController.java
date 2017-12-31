@@ -64,12 +64,15 @@ public class AdminController implements Serializable {
     }
 
     public void changeUser(boolean disable){
-        userToChange.setDisabled(disable);
-        if(crudService.saveUpdateEntity(userToChange)){
-            FacesMessages.info("User "+userToChange.getEmail()+ "disabled : "+userToChange.isDisabled());
-        }else{
-            FacesMessages.info("User not changed, see logs");
+        if(userToChange != null){
+            userToChange.setDisabled(disable);
+            if(crudService.saveUpdateEntity(userToChange)){
+                FacesMessages.info("User "+userToChange.getEmail()+ " disabled: "+userToChange.isDisabled());
+            }else{
+                FacesMessages.info("User not changed, see logs");
+            }
         }
+
     }
 
     public ClassesEntity getNewULclass() {

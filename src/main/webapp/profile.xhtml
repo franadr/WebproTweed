@@ -21,7 +21,18 @@
         <ui:define name="content">
             <h:form id="profileAction">
                 <b:panel rendered="#{viewController.modPass}" title="Modify password" collapsible="false">
-                    Mod password view
+                    <h:form>
+                        <h:outputLabel for="pass" value="Current password " />
+                        <p:password id="pass" value="#{loginController.oldPassword}" />
+                        <b:message/>
+                        <h:outputLabel for="newpass" value="New password " />
+                        <p:password id="newpass" value="#{loginController.newPassword}" match="confirmPassword"/>
+                        <b:message/>
+                        <h:outputLabel for="confirmPassword" value="Confirmation " />
+                        <p:password id="confirmPassword" value="#{loginController.confirmPassword}"/>
+                        <b:message/>
+                        <b:commandButton value="save" action="#{loginController.changePassword}"/>
+                    </h:form>
                 </b:panel>
                 <b:panel rendered="#{viewController.createChannel}" title="Create channel" collapsible="false">
                     <h:form>

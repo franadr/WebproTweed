@@ -16,7 +16,7 @@
     <ui:composition template="layout.xhtml">
         <ui:define name="content">
             <b:panel collapsible="false" title="Tweeds thread">
-                <b:panel collapsible="true" collapsed="false" title="New tweed">
+                <b:panel collapsible="true" collapsed="true" title="New tweed">
                     <h:form>
                         <b:inputTextarea value="#{tweedController.newTweed.content}" id="message" maxlength="200" placeholder="#Enter your tweed ... " required="true"/>
                         <b:message for="message"/>
